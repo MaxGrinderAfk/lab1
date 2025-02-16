@@ -38,3 +38,4 @@ data/
 resources/
 mvnw
 mvnw.cmd
+src\test\java\Lab1ApplicationTests

@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(StudentController.class)
-public class StudentControllerTest {
+class StudentControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -169,7 +169,7 @@ public class StudentControllerTest {
 
     @Test
     void deleteStudentWhenSuccessfulShouldReturnRemainingStudents() throws Exception {
-        when(studentService.deleteStudent(eq(2L))).thenReturn(true);
+        when(studentService.deleteStudent(2L)).thenReturn(true);
         List<Student> remainingStudents = new ArrayList<>();
         remainingStudents.add(testStudent);
         when(studentService.readStudents(isNull(), isNull(), isNull())).thenReturn(remainingStudents);
@@ -182,7 +182,7 @@ public class StudentControllerTest {
 
     @Test
     void deleteStudentWhenUnsuccessfulShouldReturnMethodNotAllowed() throws Exception {
-        when(studentService.deleteStudent(eq(999L))).thenReturn(false);
+        when(studentService.deleteStudent(999L)).thenReturn(false);
 
         mockMvc.perform(delete("/students/delete/{studentId}", 999L))
                 .andExpect(status().isMethodNotAllowed());
@@ -190,7 +190,7 @@ public class StudentControllerTest {
 
     @Test
     void deleteStudentWhenSuccessfulButNoRemainingStudentsShouldReturnMethodNotAllowed() throws Exception {
-        when(studentService.deleteStudent(eq(1L))).thenReturn(true);
+        when(studentService.deleteStudent(1L)).thenReturn(true);
         when(studentService.readStudents(isNull(), isNull(), isNull())).thenReturn(new ArrayList<>());
 
         mockMvc.perform(delete("/students/delete/{studentId}", 1L))

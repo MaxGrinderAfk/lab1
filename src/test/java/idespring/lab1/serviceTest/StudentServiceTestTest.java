@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class StudentServiceTestTest {
+class StudentServiceTestTest {
     @Mock
     private StudentDaoInterface studDao;
 
@@ -28,7 +28,7 @@ public class StudentServiceTestTest {
     Student stud = new Student("Bob", 25, 13, marks);
     Student stud2 = new Student("Mark", 22, 11, marks);
 
-    public List<Student> addStudentsToList()
+    List<Student> addStudentsToList()
     {
         List<Student> students = new ArrayList<>(2);
 
@@ -39,7 +39,7 @@ public class StudentServiceTestTest {
     }
 
     @Test
-    public void shouldReadStudentsById() {
+    void shouldReadStudentsById() {
         when(studDao.findById(13L)).thenReturn(stud);
         List<Student> result = studentService.readStudents(null, null, 13L);
 
@@ -49,7 +49,7 @@ public class StudentServiceTestTest {
     }
 
     @Test
-    public void shouldReadAllStudents() {
+    void shouldReadAllStudents() {
         List<Student> students = this.addStudentsToList();
 
         when(studDao.findAll()).thenReturn(students);
@@ -61,7 +61,7 @@ public class StudentServiceTestTest {
     }
 
     @Test
-    public void shouldReadStudentsByAge() {
+    void shouldReadStudentsByAge() {
         List<Student> students = new ArrayList<>();
         students.add(stud2);
 
@@ -74,7 +74,7 @@ public class StudentServiceTestTest {
     }
 
     @Test
-    public void shouldReadStudentsAndSortByName() {
+    void shouldReadStudentsAndSortByName() {
         List<Student> students = this.addStudentsToList();
 
         when(studDao.sortByName("sort")).thenReturn(students);
@@ -86,7 +86,7 @@ public class StudentServiceTestTest {
     }
 
     @Test
-    public void shouldReadStudentsByAgeAndSortByName() {
+    void shouldReadStudentsByAgeAndSortByName() {
         List<Student> students = new ArrayList<>();
         students.add(stud);
 
@@ -99,7 +99,7 @@ public class StudentServiceTestTest {
     }
 
     @Test
-    public void shouldAddStudent() {
+    void shouldAddStudent() {
         when(studDao.add(stud)).thenReturn(stud);
 
         Student result = studentService.addStudent(stud);
@@ -108,7 +108,7 @@ public class StudentServiceTestTest {
     }
 
     @Test
-    public void shouldUpdateStudent() {
+    void shouldUpdateStudent() {
         Student studN = new Student("NS", 30, 30, marks);
 
         when(studDao.update(studN, 13)).thenReturn(true);
@@ -118,7 +118,7 @@ public class StudentServiceTestTest {
     }
 
     @Test
-    public void shouldDeleteStudent() {
+    void shouldDeleteStudent() {
         when(studDao.delete(13)).thenReturn(true);
 
         Boolean result = studentService.deleteStudent(13);

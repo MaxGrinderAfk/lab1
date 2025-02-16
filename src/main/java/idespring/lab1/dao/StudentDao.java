@@ -1,7 +1,6 @@
 package idespring.lab1.dao;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import idespring.lab1.model.Student;
 import org.springframework.stereotype.Repository;
 
@@ -19,14 +18,14 @@ public class StudentDao implements StudentDaoInterface {
     public List<Student> sortByName(String sort) {
         return students.values().stream()
                 .sorted(Comparator.comparing(Student::getName))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
     public List<Student> findByAge(int age) {
         return students.values().stream()
                 .filter(student -> student.getAge() == age)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -34,7 +33,7 @@ public class StudentDao implements StudentDaoInterface {
         return students.values().stream()
                 .filter(student -> student.getAge() == age)
                 .sorted(Comparator.comparing(Student::getName))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
