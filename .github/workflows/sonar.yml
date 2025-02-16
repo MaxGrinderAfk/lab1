@@ -1,0 +1,36 @@
+name: SonarCloud Analysis
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  sonar:
+    name: SonarCloud Analysis
+    runs-on: windows-latest  
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '23'  
+
+      - name: Setup Maven
+        uses: stCarolas/setup-maven@v4
+        with:
+          maven-version: '3.8.6'  
+
+      - name: Build and test with Maven
+        run: mvn clean verify
+
+      - name: Run SonarCloud analysis
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  
+        run: mvn sonar:sonar -Dsonar.organization=maxgrinderafk -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=%SONAR_TOKEN%
