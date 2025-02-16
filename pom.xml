@@ -30,6 +30,10 @@
     <properties>
         <java.version>23</java.version>
     </properties>
+    <properties>
+        <sonar.organization>maxgrinderafk</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
