@@ -1,16 +1,13 @@
-name: CI with SonarCloud
+name: SonarCloud Analysis
 
 on:
   push:
     branches:
-      - master  
-  pull_request:
-    branches:
       - master
 
 jobs:
-  build:
-    runs-on: windows-latest  
+  sonar:
+    runs-on: windows-latest
 
     steps:
       - name: Checkout repository
@@ -22,22 +19,22 @@ jobs:
           distribution: 'temurin'
           java-version: '23'
 
-      - name: Cache Maven dependencies
+      - name: Cache Maven packages
         uses: actions/cache@v3
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
+          key: maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: maven-
 
-      - name: Build and run tests
-        run: mvn clean verify
+      - name: Build project
+        run: mvn clean install
 
       - name: SonarCloud Analysis
         run: |
-          mvn sonar:sonar ^
-            -Dsonar.organization=maxgrinderafk ^
-            -Dsonar.projectKey=lab1 ^
-            -Dsonar.host.url="https://sonarcloud.io" ^
-            -Dsonar.login=${{ secrets.SONAR_TOKEN }} ^
-            -Dsonar.branch.name=master
-
+          mvn sonar:sonar `
+            -D"sonar.organization=maxgrinderafk" `
+            -D"sonar.projectKey=lab1" `
+            -D"sonar.host.url=https://sonarcloud.io" `
+            -D"sonar.login=${{ secrets.SONAR_TOKEN }}" `
+            -D"sonar.branch.name=master"
+        shell: cmd
