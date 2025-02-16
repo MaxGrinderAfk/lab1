@@ -33,7 +33,7 @@ jobs:
         run: |
           mvn sonar:sonar `
             -D"sonar.organization=maxgrinderafk" `
-            -D"sonar.projectKey=lab1" `
+            -D"sonar.projectKey=MaxGrinderAfk_lab1" `
             -D"sonar.host.url=https://sonarcloud.io" `
             -D"sonar.login=${{ secrets.SONAR_TOKEN }}" `
             -D"sonar.branch.name=master"
