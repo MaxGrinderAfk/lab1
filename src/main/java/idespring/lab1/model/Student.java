@@ -6,14 +6,24 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.Data;
 
-
-@AllArgsConstructor
-@NoArgsConstructor
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@Data
 public class Student {
     @NotNull
     @NotEmpty
     private String name;
+
+    public Student(String name, int age, long studentId, List<Integer> marks) {
+        this.name = name;
+        this.age = age;
+        this.studentId = studentId;
+        this.marks = marks;
+    }
+
+    public Student() {}
 
     public String getName() {
         return this.name;
