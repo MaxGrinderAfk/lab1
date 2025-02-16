@@ -31,3 +31,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+#lab1Ignore#
+.mvn/
+data/
+resources/
+mvnw
+mvnw.cmd
+pom.xml
