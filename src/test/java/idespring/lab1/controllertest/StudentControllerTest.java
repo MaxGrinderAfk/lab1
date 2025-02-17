@@ -1,4 +1,4 @@
-package idespring.lab1.controllerTest;
+package idespring.lab1.controllertest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import idespring.lab1.controller.StudentController;
@@ -33,6 +33,12 @@ class StudentControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    String studId = "$[0].studentId";
+
+    String studGet = "/students/get";
+
+    String studDelete = "/students/delete/{studentId}";
 
     private Student testStudent;
     private List<Student> studentList;
@@ -82,7 +88,7 @@ class StudentControllerTest {
 
         mockMvc.perform(get("/students/get/{studentId}", 1L))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].studentId").value(testStudent.getStudentId()))
+                .andExpect(jsonPath(studId).value(testStudent.getStudentId()))
                 .andExpect(jsonPath("$[0].name").value(testStudent.getName()))
                 .andExpect(jsonPath("$[0].age").value(testStudent.getAge()))
                 .andExpect(jsonPath("$[0].marks").isArray())
@@ -101,10 +107,10 @@ class StudentControllerTest {
     void getStudentsWhenStudentsExistShouldReturnAllStudents() throws Exception {
         when(studentService.readStudents(isNull(), isNull(), isNull())).thenReturn(studentList);
 
-        mockMvc.perform(get("/students/get"))
+        mockMvc.perform(get(studGet))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].studentId").value(testStudent.getStudentId()))
+                .andExpect(jsonPath(studId).value(testStudent.getStudentId()))
                 .andExpect(jsonPath("$[1].studentId").value(2L));
     }
 
@@ -114,7 +120,7 @@ class StudentControllerTest {
         filteredList.add(testStudent);
         when(studentService.readStudents(eq(20), isNull(), isNull())).thenReturn(filteredList);
 
-        mockMvc.perform(get("/students/get")
+        mockMvc.perform(get(studGet)
                         .param("age", "20"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
@@ -125,7 +131,7 @@ class StudentControllerTest {
     void getStudentsWithSortParamShouldReturnSortedStudents() throws Exception {
         when(studentService.readStudents(isNull(), eq("asc"), isNull())).thenReturn(studentList);
 
-        mockMvc.perform(get("/students/get")
+        mockMvc.perform(get(studGet)
                         .param("sort", "asc"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)));
@@ -135,7 +141,7 @@ class StudentControllerTest {
     void getStudentsWhenNoStudentsFoundShouldReturnNotFound() throws Exception {
         when(studentService.readStudents(any(), any(), any())).thenReturn(new ArrayList<>());
 
-        mockMvc.perform(get("/students/get"))
+        mockMvc.perform(get(studGet))
                 .andExpect(status().isNotFound());
     }
 
@@ -153,7 +159,7 @@ class StudentControllerTest {
                         .content(objectMapper.writeValueAsString(testStudent)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].studentId").value(1L))
+                .andExpect(jsonPath(studId).value(1L))
                 .andExpect(jsonPath("$[0].name").value("Updated Name"));
     }
 
@@ -174,17 +180,17 @@ class StudentControllerTest {
         remainingStudents.add(testStudent);
         when(studentService.readStudents(isNull(), isNull(), isNull())).thenReturn(remainingStudents);
 
-        mockMvc.perform(delete("/students/delete/{studentId}", 2L))
+        mockMvc.perform(delete(studDelete, 2L))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].studentId").value(1L));
+                .andExpect(jsonPath(studId).value(1L));
     }
 
     @Test
     void deleteStudentWhenUnsuccessfulShouldReturnMethodNotAllowed() throws Exception {
         when(studentService.deleteStudent(999L)).thenReturn(false);
 
-        mockMvc.perform(delete("/students/delete/{studentId}", 999L))
+        mockMvc.perform(delete(studDelete, 999L))
                 .andExpect(status().isMethodNotAllowed());
     }
 
@@ -193,7 +199,7 @@ class StudentControllerTest {
         when(studentService.deleteStudent(1L)).thenReturn(true);
         when(studentService.readStudents(isNull(), isNull(), isNull())).thenReturn(new ArrayList<>());
 
-        mockMvc.perform(delete("/students/delete/{studentId}", 1L))
+        mockMvc.perform(delete(studDelete, 1L))
                 .andExpect(status().isMethodNotAllowed());
     }
 

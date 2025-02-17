@@ -1,4 +1,4 @@
-package idespring.lab1.serviceTest;
+package idespring.lab1.servicetest;
 
 import idespring.lab1.dao.StudentDaoInterface;
 import idespring.lab1.model.Student;
